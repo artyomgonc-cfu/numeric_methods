@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <cmath>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 double accuracy() {
@@ -39,13 +40,19 @@ double calc_exp(int x) {
 int main() {
     cout << scientific;
     cout << setw(5) << "x" << '|' << setw(12) << "calculated" << '|' << setw(12) << "exp(x)" << '|'
-        << setw(12) << "fault" << "|fault (%)" << endl;
+        << setw(12) << "abs fault" << "| rel fault" << endl;
 
-    vector<int> test_vals{-50, -25, -10, 0, 10, 25, 50};
+    vector<int> test_vals{0};
+    for (int i = 10; i <= 50; i+=10) {
+        test_vals.push_back(i);
+        test_vals.push_back(-i);
+    }
+    sort(test_vals.begin(), test_vals.end());
+
+
     for (int i : test_vals) {
         cout << setw(5) << i << '|' << setw(12) << calc_exp(i) << '|' << setw(12) << exp(i) << '|'
-        << setw(12) << abs(calc_exp(i) - exp(i)) << '|' << fixed << abs(calc_exp(i) - exp(i))/exp(i)*100 << "%" << endl;
-        cout << scientific;
+        << setw(12) << abs(calc_exp(i) - exp(i)) << '|' << abs(calc_exp(i) - exp(i))/exp(i) << endl;
     }
 
     return 0;
