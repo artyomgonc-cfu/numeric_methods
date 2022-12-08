@@ -43,6 +43,10 @@ int main() {
         cout << "y:\n";
         for (double yv : y)
             cout << yv << endl;
+
+        cout << "y_calc:\n";
+        for (double xv = -1; xv <= 1; xv += 0.25 / 2)
+            cout << l(xv, x, y) << endl;
     }
     return 0;
 }
