@@ -19,7 +19,7 @@ double l(double val, const vector<double>& x, const vector<double>& y) {
 }
 
 double f(double x) {
-    return x*x*x;
+    return x * x * x;
 }
 
 int main() {
@@ -44,8 +44,13 @@ int main() {
             cout << yv << endl;
 
         cout << "y_calc:\n";
-        for (double xv = -1; xv <= 1; xv += 0.25 / 2)
+        double max_fault = -1e9;
+        for (double xv = -1; xv <= 1; xv += 0.25 / 2) {
             cout << l(xv, x, y) << endl;
+            if (abs(l(xv, x, y) - f(xv)) > max_fault)
+                max_fault = abs(l(xv, x, y) - f(xv));
+        }
+        cout << "n=" << n << ": max abs fault = " << max_fault << endl;
     }
     return 0;
 }
