@@ -32,6 +32,46 @@ void print(const vector<vector<double>>& v, int dash_pos) {
     }
 }
 
+vector<double> gauss(const vector<vector<double>>& a, const vector<double>& b) {
+    vector<vector<double>> g(a.size(), vector<double>(a.size() + 1));
+    for (int i = 0; i < a.size(); i++)
+        for (int j = 0; j < a[0].size(); j++)
+            g[i][j] = a[i][j];
+
+    for (int i = 0; i < a.size(); i++)
+        g[i][a.size()] = b[i];
+
+    cout << setprecision(3);
+    print(g, a.size());
+
+    for (int it = 0; it < a.size() - 1; it++) {
+        double maxv = -1e10;
+        int maxi;
+        for (int i = it; i < a.size(); i++)
+            if (g[i][it] > maxv) {
+                maxv = g[i][it];
+                maxi = i;
+            }
+        swap(g[it], g[maxi]);
+        for (int i = it + 1; i < a.size(); i++)
+            g[i] = (-g[it][it] / g[i][it]) * g[i] + g[it];
+
+        //print(g, a.size());
+    }
+
+    vector<double> x(a.size());
+    for (int i = a.size() - 1; i >= 0; i--) {
+        double bb = g[i][a.size()];
+        for (int j = a.size() - 1; j > i; j--)
+            bb -= g[i][j] * x[j];
+        x[i] = bb / g[i][i];
+    }
+
+    return x;
+}
+
+//-----------------------------------------------------------------------------------------------------
+
 vector<vector<double>> transpone(const vector<vector<double>>& a) {
     vector<vector<double>> ans(a.size(), vector<double>(a.size()));
     for (int i = 0; i < a.size(); i++)
@@ -79,44 +119,6 @@ vector<double> solve(const vector<vector<double>>& a, const vector<double>& b) {
         double sum = 0;
         for (int j = i+1; j < a.size(); j++) sum += x[j] * llt.second[i][j];
         x[i] = (y[i] - sum) / llt.second[i][i];
-    }
-
-    return x;
-}
-
-vector<double> gauss(const vector<vector<double>>& a, const vector<double>& b) {
-    vector<vector<double>> g(a.size(), vector<double>(a.size() + 1));
-    for (int i = 0; i < a.size(); i++)
-        for (int j = 0; j < a[0].size(); j++)
-            g[i][j] = a[i][j];
-
-    for (int i = 0; i < a.size(); i++)
-        g[i][a.size()] = b[i];
-
-    cout << setprecision(3);
-    print(g, a.size());
-
-    for (int it = 0; it < a.size() - 1; it++) {
-        double maxv = -1e10;
-        int maxi;
-        for (int i = it; i < a.size(); i++)
-            if (g[i][it] > maxv) {
-                maxv = g[i][it];
-                maxi = i;
-            }
-        swap(g[it], g[maxi]);
-        for (int i = it + 1; i < a.size(); i++)
-            g[i] = (-g[it][it] / g[i][it]) * g[i] + g[it];
-
-        //print(g, a.size());
-    }
-
-    vector<double> x(a.size());
-    for (int i = a.size() - 1; i >= 0; i--) {
-        double bb = g[i][a.size()];
-        for (int j = a.size() - 1; j > i; j--)
-            bb -= g[i][j] * x[j];
-        x[i] = bb / g[i][i];
     }
 
     return x;
