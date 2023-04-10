@@ -50,29 +50,17 @@ vector<double> calc(double a, double b, double n, double ya, double yb) {
     return sys_solve(ma, mb);
 }
 
-double dist(vector<double>& a, vector<double>& b) {
-    double ans = 0;
-    for (int i = 0; i < a.size(); i++)
-        ans += pow((a[i] - b[i]), 2);
-
-    return sqrt(ans);
-}
-
 int main() {
     const double pi = acos(-1);
     vector<double> ns{ 10, 20 };
 
     for (double n : ns) {
 
-        vector<double> real;
-        double h = 10.0 / n;
-        for (double x = 0; x < 10.0 + 1e-7; x += h)
-            h++;
-
         cout << "n=" << n << ":\n";
         vector<double> ys = calc(0, 10, n, 0, 2.1);
         for (double y : ys)
             cout << y << endl;
+        cout << endl;
     }
     return 0;
 }
